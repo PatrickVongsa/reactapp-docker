@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: app-dev
+    image: app-dev
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./src:/my-app/src
+    ports:
+      - 3000:3000
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.app.tls=true
+      - traefik.http.routers.app.rule=Host("myreactapp.webgo.localhost")
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
